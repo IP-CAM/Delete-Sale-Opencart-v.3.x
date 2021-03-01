@@ -1,44 +1,44 @@
 # opencart-sale-delete
 Opencart 3.x sale delete
-Bugün sizlere bazı zamanlarda çok aradığımız işlemlerden biri olan Opencart Sipariş Silme nasıl yapılır bu konuda bir yazı ve kod bloğunu paylaşmak istedim.
+Today, I wanted to share an article and a block of code on how to do Opencart Order Deletion, which is one of the operations that we are looking for at some times.
 
-Opencart sipariş silme işlemi neden gereklidir peki ?
-Opencart sipariş silme işlemi genel olarak sipariş iptali sağlayan ve bunları panelde gereksiz görenler için yapılan işlemdir. Genelde gereksiz müşteriler veya sitedeki işleyiş düzenini görmek isteyen ziyaretçiler site üzerinden sipariş vererek, hangi aşamaların olduğunu, hangi yapıların barındığını görmek istemektedirler. Bu gibi durumlarda sipariş sonuçlanmadığı gibi panel üzerinde çok fazla sipariş bulunabiliyor. Bu durumların önüne geçmek için sipariş silme işlemini yapabiliyoruz.
+Why is Opencart order deletion necessary?
+Opencart order deletion is the process that generally provides order cancellation and is performed for those who see them unnecessary in the panel. Generally, unnecessary customers or visitors who want to see the functioning of the site want to see what stages are and which structures are hosted by placing an order on the site. In such cases, the order is not finalized and there are too many orders on the panel. In order to avoid these situations, we can delete orders.
 
-Dikkat!
-Bu opencart 3.x üzerinden anlatılmakta olup, işlemlere başlamadan önce mutlaka yedek alınması son derece önemlidir! Yazacağım kodların uygulama kısmındaki sorumluluk tamamen sizlere ait olacağını belirtmek isterim.
+Attention!
+This is explained on opencart 3.x and it is extremely important to make a backup before starting operations! I would like to state that the responsibility in the application part of the codes I will write will belong to you completely.
 
-işlem adımları
-Bu işlem iki adımdan oluşmaktadır.
-1. admin üzerinde hiç bir işlem yapmadıysanız dosyaları atabilirsiniz
-2. admin üzerinde kendi geliştirmeleriniz var ise düzenleme ile alt kısımda belirteceğim adımlar izleyerek ekleme yapabilirsiniz.
+process steps
+This process consists of two steps.
+1. If you have not done any action on the admin, you can transfer the files
+2. If you have your own improvements on admin, you can edit and add by following the steps I will specify at the bottom.
 
-admin > controller > sale > order.php dosyasını açın ve en alt satıra gelin.
-public function getOrderDelete(){
-        $this->load->model('sale/order');
-        if(isset($this->request->post['siparis']))
+Open admin> controller> sale> order.php and go to the bottom line.
+public function getOrderDelete () {
+        $ this-> load-> model ('sale / order');
+        if (isset ($ this-> request-> post ('order')))
         {
-//            print_r($this->request->post['siparis']);
-            foreach ( $this->request->post['siparis'] as $key => $val )
+// print_r ($ this-> request-> post ['order']);
+            foreach ($ this-> request-> post ('order') as $ key => $ val)
             {
-                $qry    =   $this->model_sale_order->getOrderDelete($val);
+                $ qry = $ this-> model_sale_order-> getOrderDelete ($ val);
             }
-            $this->response->setOutput(json_encode(['response'=>true]));
+            $ this-> response-> setOutput (json_encode (['response' => true]));
         }
     }
-2. admin > controller > sale > order.php satır 211 gelin ve $data[‘add’] kısmının altına ekleyin.
-$data['sil'] = $this->url->link('sale/order/getOrderDelete', 'user_token=' . $this->session->data['user_token'], true);
-3. admin > model > sale > order.php
-public function getOrderDelete($order_id){
-        $sql    =   "DELETE oo FROM ". DB_PREFIX ."order as oo JOIN ". DB_PREFIX ."order_history as ooh JOIN ". DB_PREFIX ."order_product as oop ";
-        $sql    .=  "ON oo.order_id = oop.order_id JOIN ". DB_PREFIX ."order_total as oot ON oo.order_id = oot.order_id";
-        $sql    .=  " WHERE oo.order_id =".$order_id;
-        if($this->db->query($sql)) {
+2. Go to admin> controller> sale> order.php line 211 and add it under $ data ['add'].
+$ data ['delete'] = $ this-> url-> link ('sale / order / getOrderDelete', 'user_token ='. $ this-> session-> data ['user_token'], true);
+3. admin> model> sale> order.php
+public function getOrderDelete ($ order_id) {
+        $ sql = "DELETE oo FROM". DB_PREFIX. "Order as oo JOIN". DB_PREFIX. "Order_history as ooh JOIN". DB_PREFIX. "Order_product as oop";
+        $ sql. = "ON oo.order_id = oop.order_id JOIN". DB_PREFIX. "Order_total as oot ON oo.order_id = oot.order_id";
+        $ sql. = "WHERE oo.order_id =". $ order_id;
+        if ($ this-> db-> query ($ sql)) (
             return true;
         }
     }
     
-4. admin > view > template > sale > order_list.twig dosyasını açın ve 10. satıra ekleyin
+4. Open admin> view> template> sale> order_list.twig and add it to line 10
 
 <a href="{{ sil }}" id="siparisSil" data-toggle="tooltip" title="Seçili Siparişleri Sil" class="btn btn-danger"><i class="fa fa-trash-o"></i></a> </div>
 5. admin > view > template > sale > order_list.twig dosyanın en son satırındaki script kodlarınızın arasında alttaki kodları ekleyin.
@@ -78,9 +78,9 @@ $('a#siparisSil').on('click',function(){
     });
     return false;
 });
-Opencart Sipariş Silme
-Opencart Sipariş Silme
-Yukarıdaki işlemleri sırası ile takip etmenizin ardından sorun yaşamadan silme işlemini tamamlamış olacaksınız.
-projenin kaynak kodları ile beraber github sayfamda paylaşıyor olacağım. Değişiklik ve gelişltirmelerde ekleme yaparsanız tekrar kontrol edip gelişmeleride sizinle paylaşacağım.
+Opencart Order Deletion
+Opencart Order Deletion
+After you follow the above processes in order, you will have completed the deletion without any problems.
+I will be sharing the source code of the project on my github page. If you add changes and improvements, I will check it again and share it with you.
 
-Projenin web sayfası linkine ulaşmak için ise. http://dokuman.kurtulusoz.com.tr/2018/opencart-siparis-silme/ bakabilirsiniz.
+To reach the web page link of the project. You can see http://dokuman.kurtulusoz.com.tr/2018/opencart-siparis-silme/. 
