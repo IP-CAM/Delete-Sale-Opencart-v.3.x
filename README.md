@@ -41,7 +41,7 @@ public function getOrderDelete ($ order_id) {
 4. Open admin> view> template> sale> order_list.twig and add it to line 10
 
 <a href="{{ sil }}" id="siparisSil" data-toggle="tooltip" title="Seçili Siparişleri Sil" class="btn btn-danger"><i class="fa fa-trash-o"></i></a> </div>
-5. admin > view > template > sale > order_list.twig dosyanın en son satırındaki script kodlarınızın arasında alttaki kodları ekleyin.
+5. admin > view > template > sale > order_list.twig Add the codes below between your script codes in the last line of the file.
 
 $('a#siparisSil').on('click',function(){
     if($('.table-responsive').find('input[type=checkbox]:checked').length == 0)
