@@ -1,4 +1,4 @@
-# opencart-sale-delete
+# opencart-delete-sale
 Opencart 3.x sale delete
 Today, I wanted to share an article and a block of code on how to do Opencart Order Deletion, which is one of the operations that we are looking for at some times.
 
